@@ -10,21 +10,36 @@ pipeline {
 
     stages {
 
+        stage("Checkout") {
+            steps {
+                checkout scm
+            }
+        }
+
         stage("Workspace Cleanup") {
             steps {
                 cleanWs()
+                checkout scm
             }
         }
 
         stage("Environment Setup") {
             steps {
                 sh '''
-                #!/bin/bash
-                python3 -m venv .venv
-                . .venv/bin/activate
-                pip install -r requirements.txt
+                    python3 -m venv .venv
+                    . .venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
                 '''
+            }
+        }
 
+        stage("Start Services (MLflow + Prefect)") {
+            steps {
+                sh '''
+                    chmod +x start_service.sh
+                    ./start_service.sh &
+                '''
             }
         }
 
@@ -58,7 +73,7 @@ pipeline {
             echo "Image pushed to DockerHub successfully"
         }
         failure {
-            echo " Pipeline failed"
+            echo "Pipeline failed"
         }
     }
 }
