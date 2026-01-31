@@ -36,12 +36,24 @@ pipeline {
 
         stage("Start Services (MLflow + Prefect)") {
             steps {
-                sh '''
-                    chmod +x start_services.sh
-                    ./start_services.sh &
-                '''
+                script {
+                    // Run the script and capture exit code
+                    def status = sh(script: 'chmod +x start_services.sh && ./start_services.sh', returnStatus: true)
+                    
+                    if (status != 0) {
+                        // Fail the build with message
+                        error("""
+                         start_services.sh failed with exit code ${status}.
+                        Please check the file exists, has execute permissions, 
+                        and look at the console logs for more details.
+                        """)
+                    } else {
+                        echo " start_services.sh ran successfully."
+                    }
+                }
             }
         }
+
 
         stage("Docker Login") {
             steps {
