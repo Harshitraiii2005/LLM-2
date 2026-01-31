@@ -37,8 +37,8 @@ pipeline {
         stage("Start Services (MLflow + Prefect)") {
             steps {
                 sh '''
-                    chmod +x start_service.sh
-                    ./start_service.sh &
+                    chmod +x start_services.sh
+                    ./start_services.sh &
                 '''
             }
         }
