@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentiment Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Sentiment Analysis (News)</h1>
+
+    {% if message %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="news_text" class="form-label">Enter News Text:</label>
+            <textarea class="form-control" id="news_text" name="news_text" rows="4">{{ news_text }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Predict Sentiment</button>
+    </form>
+
+    {% if prediction %}
+    <div class="mt-4">
+        <h4>Prediction: <span class="badge bg-info text-dark">{{ prediction }}</span></h4>
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/retrain" class="mt-4">
+        <button type="submit" class="btn btn-warning">Retrain Pipeline</button>
+    </form>
+</div>
+</body>
+</html>

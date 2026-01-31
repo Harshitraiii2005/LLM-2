@@ -22,3 +22,17 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna().drop_duplicates()
     df["final_cleaned_text"] = df["Product Review"].apply(clean_text)
     return df
+
+def preprocess_single_text(text: str) -> str:
+    """
+    Preprocess a single input string for inference/prediction.
+    This should NEVER use pandas operations.
+    """
+    if not isinstance(text, str):
+        raise ValueError("Input to preprocess_single_text must be a string")
+
+    text = text.strip()
+    if text == "":
+        return ""
+
+    return clean_text(text)

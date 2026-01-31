@@ -1,0 +1,11 @@
+flask
+pandas
+numpy
+scikit-learn
+nltk
+
+mlflow<2.12
+prefect<2.15
+sqlalchemy<2.0
+
+joblib
